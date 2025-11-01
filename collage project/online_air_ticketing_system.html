@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Air Ticketing System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #007bff;
+      color: white;
+      text-align: center;
+      padding: 20px 0;
+    }
+    .container {
+      width: 90%;
+      max-width: 1000px;
+      margin: 20px auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: bold;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-top: 5px;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      border: none;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .flights {
+      margin-top: 20px;
+    }
+    .flight {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 15px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .ticket {
+      margin-top: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 15px;
+      background-color: #e9f7ef;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Online Air Ticketing System</h1>
+  </header>
+
+  <div class="container">
+    <form id="flightForm">
+      <div>
+        <label for="from">From:</label>
+        <input type="text" id="from" placeholder="Enter Departure City" required>
+      </div>
+      <div>
+        <label for="to">To:</label>
+        <input type="text" id="to" placeholder="Enter Destination City" required>
+      </div>
+      <div>
+        <label for="date">Date:</label>
+        <input type="date" id="date" required>
+      </div>
+      <div>
+        <label for="passengers">Passengers:</label>
+        <input type="number" id="passengers" min="1" value="1" required>
+      </div>
+      <div>
+        <label for="class">Class:</label>
+        <select id="class">
+          <option value="Economy">Economy</option>
+          <option value="Business">Business</option>
+        </select>
+      </div>
+      <div>
+        <button type="submit">Search Flights</button>
+      </div>
+    </form>
+
+    <div id="flightResults" class="flights"></div>
+    <div id="ticketDisplay" class="ticket"></div>
+  </div>
+
+  <script>
+    document.getElementById('flightForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const from = document.getElementById('from').value;
+      const to = document.getElementById('to').value;
+      const date = document.getElementById('date').value;
+      const passengers = document.getElementById('passengers').value;
+      const travelClass = document.getElementById('class').value;
+
+      const flights = [
+        {flight: 'AI101', time: '08:00 AM', price: 3500},
+        {flight: '6E302', time: '11:30 AM', price: 4200},
+        {flight: 'SG208', time: '03:45 PM', price: 3900},
+        {flight: 'UK701', time: '09:00 PM', price: 4700}
+      ];
+
+      let resultsHTML = '<h3>Available Flights</h3>';
+      flights.forEach(f => {
+        resultsHTML += `
+          <div class="flight">
+            <div>
+              <strong>${f.flight}</strong><br>
+              Time: ${f.time}<br>
+              Price: ₹${f.price}
+            </div>
+            <button onclick="bookFlight('${f.flight}','${from}','${to}','${date}',${f.price},${passengers},'${travelClass}')">Book</button>
+          </div>
+        `;
+      });
+
+      document.getElementById('flightResults').innerHTML = resultsHTML;
+    });
+
+    function bookFlight(flight, from, to, date, price, passengers, travelClass) {
+      const total = price * passengers;
+      document.getElementById('ticketDisplay').innerHTML = `
+        <h3>Ticket Details</h3>
+        <p><strong>Flight:</strong> ${flight}</p>
+        <p><strong>From:</strong> ${from}</p>
+        <p><strong>To:</strong> ${to}</p>
+        <p><strong>Date:</strong> ${date}</p>
+        <p><strong>Class:</strong> ${travelClass}</p>
+        <p><strong>Passengers:</strong> ${passengers}</p>
+        <p><strong>Total Fare:</strong> ₹${total}</p>
+        <button onclick="window.print()">Print Ticket</button>
+      `;
+    }
+  </script>
+</body>
+</html>
